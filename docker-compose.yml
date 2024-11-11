@@ -11,8 +11,7 @@ services:
     networks:
       - mysql-phpmyadmin
   web:
-    build: 
-      context: ./web
+    image: ghcr.io/maximishchenko/maximishchenko/crm_inclient:latest
     command: >
       bash -c "a2enmod rewrite
       && apache2-foreground"
