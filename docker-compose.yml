@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:5.5
+    restart: unless-stopped
+    expose:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - ./db_data:/var/lib/mysql/
+    networks:
+      - mysql-phpmyadmin
+  web:
+    build: 
+      context: ./web
+    command: >
+      bash -c "a2enmod rewrite
+      && apache2-foreground"
+    container_name: web
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "80:80"
+    stdin_open: true
+    tty: true
+    networks:
+      - mysql-phpmyadmin
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    env_file:
+      - .env
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:
+
+volumes:
+  db_data:

@@ -1,0 +1,7 @@
+repositories:
+[
+    {
+        "type": "vcs",
+        "url": "https://github.com/laxu/yii-phpexcel.git"
+    }
+]
